@@ -51,7 +51,7 @@ def get_single_user(id):
 def create_user():
     request_body = request.get_json()
     if email is None or password is None:
-        return jsonify({"msg": "Bad username or password"}), 401
+        return jsonify({"msg": "Invalid username or password"}), 401
     user = User(username=request_body["username"], email=request_body["email"], password=request_body["password"])
     db.session.add(user)
     db.session.commit()
@@ -93,7 +93,7 @@ def update_planet(id):
     planet = Planet.query.get(id)
 
     if planet is None:
-        raise APIException('Planet not found', status_code=404)
+        return jsonify({"msg": "character not found"}), 404
     if "name" in request_body:
         planet.name = request_body["name"]
     if "population" in request_body:
@@ -119,7 +119,7 @@ def delete_planet(id):
     planet = Planet.query.get(id)
 
     if planet is None:
-        raise APIException('Planet not found', status_code=404)
+        return jsonify({"msg": "character not found"}), 404
 
     db.session.delete(planet)
     db.session.commit()
@@ -163,7 +163,7 @@ def update_character(id):
     character = Character.query.get(id)
 
     if character is None:
-        raise APIException('Character not found', status_code=404)
+        return jsonify({"msg": "character not found"}), 404
     if "name" in request_body:
         character.name = request_body["name"]
     if "gender" in request_body:
@@ -189,7 +189,7 @@ def delete_character(id):
     character = Character.query.get(id)
 
     if character is None:
-        return jsonify({"msg": "Bad character"}), 401
+        return jsonify({"msg": "Invalid character"}), 401
 
     db.session.delete(character)
     db.session.commit()
@@ -225,7 +225,7 @@ def add_favorite():
 def delete_favorite(id):
     favorite = Favorite.query.get(id)
     if favorite is None:
-        return jsonify({"msg": "Bad favorite"}), 401
+        return jsonify({"msg": "Invalid favorite"}), 401
     db.session.delete(favorite)
     db.session.commit()
     response_body = {
