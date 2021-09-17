@@ -80,7 +80,7 @@ def get_single_planet(id):
 def create_planet():
     request_body = request.get_json()
     if name is None or population is None or terrain is None or climate is None or orbital_period is None or rotation_period is None or diameter is None or type is None:
-        return jsonify({"msg": "Bad name or population or terrain or climate or orbital_period or rotation_period or diameter or type"}), 401
+        return jsonify({"msg": "Invalid name or population or terrain or climate or orbital_period or rotation_period or diameter or type"}), 404
     planet = Planet(name=request_body["name"], population=request_body["population"], terrain=request_body["terrain"], climate=request_body["climate"], orbital_period=request_body["orbital_period"], rotation_period=request_body["rotation_period"], diameter=request_body["diameter"], type=request_body["type"])
     db.session.add(planet)
     db.session.commit()
@@ -150,7 +150,7 @@ def get_single_character(id):
 def create_character():
     request_body = request.get_json()
     if name is None or gender is None or hair_color is None or eye_color is None or birth_year is None or height is None or skin_color is None or type is None:
-        return jsonify({"msg": "Bad name or gender or hair_color or eye_color or birth_year or height or skin_color or type"}), 401
+        return jsonify({"msg": "Invalid name or gender or hair_color or eye_color or birth_year or height or skin_color or type"}), 401
     character = Character(name=request_body["name"], gender=request_body["gender"], hair_color=request_body["hair_color"], eye_color=request_body["eye_color"], birth_year=request_body["birth_year"], height=request_body["height"], skin_color=request_body["skin_color"], type=request_body["type"])
     db.session.add(character)
     db.session.commit()
@@ -189,7 +189,7 @@ def delete_character(id):
     character = Character.query.get(id)
 
     if character is None:
-        return jsonify({"msg": "Invalid character"}), 401
+        return jsonify({"msg": "Invalid character"}), 404
 
     db.session.delete(character)
     db.session.commit()
@@ -225,7 +225,7 @@ def add_favorite():
 def delete_favorite(id):
     favorite = Favorite.query.get(id)
     if favorite is None:
-        return jsonify({"msg": "Invalid favorite"}), 401
+        return jsonify({"msg": "Invalid favorite"}), 404
     db.session.delete(favorite)
     db.session.commit()
     response_body = {
